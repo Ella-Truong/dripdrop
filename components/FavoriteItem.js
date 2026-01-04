@@ -12,8 +12,11 @@ export default function FavoriteItem({favorite}) {
         setLoading(true)
 
         try {
-            const res = await fetch('api/favorites',{
-                method: "DELETE"
+            const res = await fetch('/api/favorites',{
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: favorite.id }),
+                credentials: 'include' 
             })
 
             if (!res.ok) throw new Error('Failed to remove favorite')
@@ -37,19 +40,23 @@ export default function FavoriteItem({favorite}) {
        2. Using these options to design the display of an tiem
     */
     let optionArray = []
+
     if (favorite.options) {
         try {
-            optionArray = JSON.parse(favorite.options)
+            optionArray = typeof favorite.options === 'string'
+                ? JSON.parse(favorite.options)
+                : favorite.options  // already an object/array
         } catch(error) {
             console.error('Failed to parse options:', error)
-        }
+         }
     }
+
 
     return (
         <div className='flex items-center justify-between p-4 border rounded-md shadow-sm'>
             <div className='flex items-center gap-4'>
                 <Image
-                    src={favorite.table === 'drinks'? '/coffee.webp' : '/snack.jpeg'}
+                    src={favorite.table === 'drinks'? '/drink.avif' : '/snack5.webp'}
                     alt={favorite.name}
                     width={64}
                     height={64}

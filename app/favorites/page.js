@@ -1,54 +1,55 @@
 'use client'
-import {useEffect, useState} from 'react'
-import {useRouter} from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import FavoriteItem from '@/components/FavoriteItem'
 import Image from 'next/image'
 
-export default function FavoritesPage(){
-    const [favorites, setFavorites] = useState([])    // favorites is assigned as empty array initially, like a container or placeholder for fav items 
+export default function FavoritesPage() {
+    const [favorites, setFavorites] = useState([])
+    const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter()
 
     useEffect(() => {
-        const loadFavorites = async () => {
-            try {
-                const res = await fetch('api/favorites')
-
-                if (res.status === 401) {
-                    router.push('/login')
-                    return
-                }
-
+        const fetchFavorites = async () => {
+            setLoading(true)
+            setError(null)
+            const res = await fetch('/api/favorites', { credentials: 'include' })
+            if (res.status === 200) {
                 const data = await res.json()
-                setFavorites(Array.isArray(data) ? data: [])
-
-            } catch (error) {
-                console.error(error)
-
-            } finally {
-                setLoading(false)
+                setFavorites(data)
+            } else if (res.status === 401) {
+                setError('Please log in to see your favorites.')
+            } else {
+                setError('Failed to fetch favorites.')
             }
+            setLoading(false)
         }
-        loadFavorites()
-    },[router])
-
-    if(loading) {
-        return (
-            <div className='flex jusitfy-center py-20'>
-                <Image src='/loading.png' alt='Loading' width={40} height={40}/>
-            </div>
-        )
-    }
+        fetchFavorites()
+    }, [])
 
     return (
         <div className='mx-auto max-w-5xl py-12'>
-            <h1 className='text-3xl font-bold mb-8'>Your Favorites</h1>
-            {favorites.length === 0 ? (
+            <h1 className='text-3xl text-pink-500 text-center font-serif font-bold mb-8 animate-pulse'>Your Favorites</h1>
+
+            {loading && (
+                <div className='flex justify-center items-center'>
+                    <Image src='/loading.png' alt='Loading' width={80} height={80} />
+                </div>
+            )}
+
+            {error && (
+                <p className='text-red-500 text-center'>{error}</p>
+            )}
+
+            {!loading && !error && favorites.length === 0 && (
                 <p className='text-gray-500'>You haven't added any favorites yet.</p>
-            ) : (
+            )}
+
+            {!loading && !error && favorites.length > 0 && (
                 <div className='grid gap-6'>
                     {favorites.map(fav => (
-                        <FavoriteItem key={fav.id} favorite={fav}/>
+                        <FavoriteItem key={fav.id} favorite={fav} />
                     ))}
                 </div>
             )}

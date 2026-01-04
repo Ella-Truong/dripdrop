@@ -1,80 +1,82 @@
 'use client'
-import { useState } from 'react'
-import { supabaseBrowser } from '@/lib/supabase/browserClient.js'
-import { useRouter } from 'next/navigation'
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-    const handleLogin = async () => {
-        if (!email || !password) return  // safety check
-        setError(null)
-        setLoading(true)
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
 
-        try {
-            const { data, error: loginError } = await supabaseBrowser.auth.signInWithPassword({
-                email,
-                password
-            })
+    try {
+      // Call server-side login route
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include', // important: saves HTTP-only cookie
+      })
 
-            if (loginError) setError(loginError.message)
-            else router.push('/') // redirect to home page
-        } catch {
-            setError('Network error. Please try again')
-        } finally {
-            setLoading(false)
-        }
+      if (!res.ok) {
+        const msg = await res.text()
+        setError(msg)
+        return
+      }
+
+      // Success → redirect to favorites page
+      router.push('/favorites')
+    } catch (err) {
+      setError('Network error. Please try again.')
+      console.error(err)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        handleLogin()
-    }
+  return (
+    <form onSubmit={handleLogin} className="w-80 mx-auto p-6 bg-white/20 rounded-3xl shadow-xl border mt-5 flex flex-col gap-4">
+      <h2 className="text-2xl font-bold text-center text-pink-300">Login</h2>
 
-    return (
-        <div className="w-80 mx-auto p-6 bg-white/20 rounded-3xl shadow-xl border border-blue-100 mt-5 animate-fadeInDown">
-            <h2 className="text-2xl font-bold text-center text-pink-300 mb-5">Login</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5 mx-auto">
-                <input 
-                    type='email' 
-                    placeholder='Enter your email' 
-                    value={email} 
-                    onChange={e => {setEmail(e.target.value); setError(null)}}
-                    className='w-64 mx-auto p-2 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300'
-                    required
-                    autoComplete='email'
-                    autoFocus
-                />
-                <input 
-                    type='password' 
-                    placeholder='Enter your password' 
-                    value={password} 
-                    onChange={e => {setPassword(e.target.value); setError(null)}}
-                    className='w-64 mx-auto p-2 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300'
-                    required
-                    autoComplete='current-password'
-                />
-                <button 
-                    type='submit' 
-                    className={`w-64 mx-auto py-2 mb-2 font-semibold rounded-xl transition ${
-                        loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'
-                    }`}
-                    disabled={loading}
-                >
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-                {error && <p className='text-red-600 mt-2 text-center'>{error}</p>}
-            </form>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
+        autoFocus
+      />
 
-        </div>
-    )
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        required
+        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
+      />
+
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full py-3 font-semibold rounded-xl transition ${
+          loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'
+        }`}
+      >
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
+
+      {error && <p className="text-red-600 text-center mt-2">{error}</p>}
+    </form>
+  )
 }
-
-
 
 
 /* if login succeeds:

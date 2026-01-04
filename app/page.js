@@ -7,7 +7,7 @@ export default function HomePage() {
             {/* Background image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/login11.jpg"
+                    src="/homepage1.webp"
                     alt="Cozy Holiday"
                     fill
                     className="object-cover animate-fadeInUp"

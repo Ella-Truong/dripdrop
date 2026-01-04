@@ -21,6 +21,7 @@ export default function AddFavorite({item, size, options}){
 
             const res = await fetch('/api/favorites', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
