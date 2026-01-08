@@ -10,14 +10,15 @@ export async function POST(req) {
 
   if (data.session) {
     // Set both access and refresh token in cookies
-    const cookieOptions = "Path=/; HttpOnly; SameSite=Lax; Secure";
+    const accessCookieOptions = "Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=3600";
+    const refreshCookieOptions = "Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=604800"
 
     return new Response(JSON.stringify({ message: "Logged in" }), {
       status: 200,
       headers: {
         "Set-Cookie": [
-          `sb-access-token=${data.session.access_token}; ${cookieOptions}`,
-          `sb-refresh-token=${data.session.refresh_token}; ${cookieOptions}`,
+          `sb-access-token=${data.session.access_token}; ${accessCookieOptions}`,
+          `sb-refresh-token=${data.session.refresh_token}; ${refreshCookieOptions}`,
         ],
         "Content-Type": "application/json",
       },

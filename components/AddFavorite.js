@@ -49,7 +49,7 @@ export default function AddFavorite({item, size, options}){
             onClick={handleAddFavorite}
             disabled={loading || saved}         // make the button unclickable if the item is loading or is saved in Favorites
             className = {`mt-4 w-full py-3 rounded tracking-wider font-semibold text-black transition 
-                ${saved ? 'bg-gray-600 text-pink-400 cursor-not-allowed' : 'border-2 rounded-3xl border-pink-400 hover:bg-pink-300 hover:text-white'}`}
+                ${saved ? 'bg-gray-600 rounded-3xl text-pink-400 cursor-not-allowed' : 'border-2 rounded-3xl border-pink-400 hover:bg-pink-300 hover:text-white'}`}
         >
             {saved ? 'Added to Favorites' : loading ? 'Adding...' : 'Add to Favorites'}
         </button>

@@ -14,6 +14,8 @@ export default function FavoritesPage() {
         const fetchFavorites = async () => {
             setLoading(true)
             setError(null)
+
+            // fetch favorites with new access token
             const res = await fetch('/api/favorites', { credentials: 'include' })
             if (res.status === 200) {
                 const data = await res.json()
@@ -30,7 +32,7 @@ export default function FavoritesPage() {
 
     return (
         <div className='mx-auto max-w-5xl py-12'>
-            <h1 className='text-3xl text-pink-500 text-center font-serif font-bold mb-8 animate-pulse'>Your Favorites</h1>
+            <h1 className='text-3xl text-pink-500 text-center font-serif font-bold mb-8'>Your Favorites</h1>
 
             {loading && (
                 <div className='flex justify-center items-center'>
