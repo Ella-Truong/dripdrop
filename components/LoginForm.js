@@ -26,7 +26,14 @@ export default function LoginForm() {
 
       if (!res.ok) {
         const msg = await res.text()
-        setError(msg)
+
+        //customize the error message
+        let displayMsg = msg
+        if (msg.includes('Invalid login credentials') || msg.includes('User not found')){
+          displayMsg='Please sign up first!'
+        }
+
+        setError(displayMsg)
         return
       }
 

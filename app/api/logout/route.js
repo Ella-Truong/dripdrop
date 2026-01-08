@@ -1,23 +1,24 @@
 import { supabaseServer } from "@/lib/supabase/serverClient";
+import {cookies} from 'next/headers'
 
 export async function POST() {
   const supabase = await supabaseServer();
 
-  // Invalidate Supabase session (optional but good practice)
+  // Invalidate session in supabase
   await supabase.auth.signOut();
 
-  // Clear cookies
-  const cookieOptions =
-    "Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=0";
+  const cookieStore = await cookies()
 
-  return new Response(JSON.stringify({ message: "Logged out" }), {
-    status: 200,
-    headers: {
-      "Set-Cookie": [
-        `sb-access-token=; ${cookieOptions}`,
-        `sb-refresh-token=; ${cookieOptions}`,
-      ],
-      "Content-Type": "application/json",
-    },
-  });
+  //remove auth cookies
+  cookieStore.set("sb-access-token", "", {
+    path:"/",
+    maxAge: 0,
+  })
+
+  cookieStore.set("sb-refresh-token", "", {
+    path: "/",
+    maxAge: 0,
+  })
+
+  return new Response('Logged out', {status: 200})
 }

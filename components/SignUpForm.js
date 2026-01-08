@@ -1,119 +1,128 @@
 'use client'
 import { useState } from "react"
-import { supabaseBrowser } from '@/lib/supabase/browserClient'
 import { useRouter } from 'next/navigation'
 
 export default function SignUpForm() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
-    const [phone, setPhone] = useState('')
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [phone, setPhone] = useState('')
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-    const handleSignUp = async () => {
-        setError(null)
-        setLoading(true)
+  const handleSignUp = async () => {
+    setError(null)
+    setLoading(true)
 
-        try {
-            const { data, error: signUpError } = await supabaseBrowser.auth.signUp({
-                email, 
-                password
-            })
+    try {
+      // Sign up the user
+      const signUpRes = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
 
-            if (signUpError) {
-                setError(signUpError.message)
-                return
-            }
+      if (!signUpRes.ok) {
+        const msg = await signUpRes.text()
+        setError(msg)
+        return
+      }
 
-            if (!data.user) {
-                setError("User creation failed")
-                return
-            }
+      // Log in immediately to get session cookies (RLS-safe)
+      const loginRes = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      })
 
-            // insert profile
-            const { error: profileError } = await supabaseBrowser
-                .from('profiles')
-                .insert({
-                    id: data.user.id,
-                    username,
-                    phone,
-                    email
-                })
+      if (!loginRes.ok) {
+        const msg = await loginRes.text()
+        setError(`${msg}`)
+        return
+      }
 
-            if (profileError) {
-                setError(profileError.message)
-                return
-            }
+      // Create profile using username & phone
+      const profileRes = await fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, phone }),
+      })
 
-            router.push('/login')
+      if (!profileRes.ok) {
+        const msg = await profileRes.text()
+        console.log('Profile creation failed:', msg)
+      }
 
-        } catch (err) {
-            console.error(err)
-            setError('Network error. Please try again.')
-        } finally {
-            setLoading(false)
-        }
+      // Success → redirect to dashboard/favorites
+      router.push('/favorites')
+
+    } catch (err) {
+      console.error(err)
+      setError('Network error. Please try again.')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        handleSignUp()
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    handleSignUp()
+  }
 
-    return (
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full animate-fadeInDown'>
-            <input
-                type='text'
-                placeholder='Username'
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                required
-                className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
-                autoFocus
-            />
+  return (
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full animate-fadeInDown'>
+      <input
+        type='text'
+        placeholder='Username'
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+        required
+        className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
+        autoFocus
+      />
 
-            <input
-                type='tel'
-                placeholder='Phone Number'
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                required
-                className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
-            />
+      <input
+        type='tel'
+        placeholder='Phone Number'
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        required
+        className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
+      />
 
-            <input 
-                type='email' 
-                placeholder='Enter your email' 
-                value={email} 
-                onChange={e => setEmail(e.target.value)}
-                required
-                autoComplete='email'
-                className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
-            />
+      <input 
+        type='email' 
+        placeholder='Enter your email' 
+        value={email} 
+        onChange={e => setEmail(e.target.value)}
+        required
+        autoComplete='email'
+        className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
+      />
 
-            <input 
-                type='password' 
-                placeholder='Enter your password' 
-                value={password} 
-                onChange={e => setPassword(e.target.value)}
-                required
-                autoComplete='new-password'
-                className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
-            />
+      <input 
+        type='password' 
+        placeholder='Enter your password' 
+        value={password} 
+        onChange={e => setPassword(e.target.value)}
+        required
+        autoComplete='new-password'
+        className='w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300'
+      />
 
-            <button
-                type='submit'
-                disabled={loading}
-                className={`w-full py-3 font-semibold rounded-xl transition ${
-                    loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'
-                }`}
-            >
-                {loading ? 'Signing up...' : 'Sign Up'}
-            </button>
+      <button
+        type='submit'
+        disabled={loading}
+        className={`w-full py-3 font-semibold rounded-xl transition ${
+          loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'
+        }`}
+      >
+        {loading ? 'Signing up...' : 'Sign Up'}
+      </button>
 
-            {error && <p className='text-red-500 text-center mt-2'>{error}</p>}
-        </form>
-    )
+      {error && <p className='text-red-500 text-center mt-2'>{error}</p>}
+    </form>
+  )
 }
