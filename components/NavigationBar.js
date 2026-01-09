@@ -93,7 +93,7 @@ export default function NavigationBar({ user, setUser }) {
 
           {/* Cart */}
           <Link href="/cart">
-            <Image src="/coffee-bag2.png" width={28} height={28} alt="Cart" />
+            <Image src="/cart.png" width={28} height={28} alt="Cart"/>
           </Link>
         </div>
       </div>

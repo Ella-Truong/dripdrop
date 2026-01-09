@@ -19,9 +19,9 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-black/30 z-10"></div>
 
             {/* Content */}
-            <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-2xl mx-auto pt-15 px-6 text-center">
+            <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-2xl mx-auto pt-70 px-6 text-center">
                 {/* Glowy pastel pink headline with fade-in-up */}
-                <p className="text-3xl font-serif sm:text-4xl font-bold tracking-wide mb-5
+                <p className="text-3xl font-serif sm:text-4xl font-bold tracking-wider mb-10
                               text-pink-200 drop-shadow-[0_0_20px_rgba(255,182,193,0.8)] 
                               animate-fadeInUp">
                     ✨ It's a great day for coffee ✨
