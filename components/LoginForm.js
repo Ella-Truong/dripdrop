@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-export default function LoginForm() {
+export default function LoginForm({ setUser }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -16,49 +16,53 @@ export default function LoginForm() {
     setLoading(true)
 
     try {
-      // Call server-side login route
+      // Login API
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-        credentials: 'include', // important: saves HTTP-only cookie
+        credentials: 'include',
       })
 
+      const msg = await res.text()
+
       if (!res.ok) {
-        const msg = await res.text()
-
-        //customize the error message
         let displayMsg = msg
-        if (msg.includes('Invalid login credentials') || msg.includes('User not found')){
-          displayMsg='Please sign up first!'
+        if (msg.includes('Email not confirmed') || msg.includes('User has not confirmed')) {
+          displayMsg = 'Please confirm your email before logging in!'
+        } else if (msg.includes('Invalid login credentials') || msg.includes('User not found')) {
+          displayMsg = 'No account found with this email. Please sign up first.'
         }
-
         setError(displayMsg)
         return
       }
 
-      // Success → redirect to favorites page
-      router.push('/favorites')
+      // Fetch user profile immediately after login to update NavBar
+      const profileRes = await fetch('/api/profile', { credentials: 'include' })
+      if (profileRes.ok && setUser) {
+        const profileData = await profileRes.json()
+        router.refresh()
+      }
+      router.push('/')
+      
     } catch (err) {
-      setError('Network error. Please try again.')
       console.error(err)
+      setError('Network error. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleLogin} className="w-80 mx-auto p-6 bg-white/20 rounded-3xl shadow-xl border mt-5 flex flex-col gap-4">
-      <h2 className="text-2xl font-bold text-center text-pink-300">Login</h2>
-
+    <form onSubmit={handleLogin} className="flex flex-col gap-4">
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={e => setEmail(e.target.value)}
         required
-        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
         autoFocus
+        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
       />
 
       <input
@@ -84,7 +88,6 @@ export default function LoginForm() {
     </form>
   )
 }
-
 
 /* if login succeeds:
 data = {

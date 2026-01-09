@@ -44,7 +44,7 @@ export default function Footer() {
                             height={15}
                             alt='My Phone Number'
                         />
-                        <h3 className='text-sm font-serif text-gray-600 hover:text-pink-400'>714-902-4728</h3>
+                        <h3 className='text-sm font-serif text-gray-600 hover:text-pink-400'>xxx-xxx-xxxx</h3>
                     </Link>
                 </div>
                 <footer className="text-center text-sm text-gray-500 mt-5"> © {new Date().getFullYear()} Ella Truong. ALL RIGHTS RESERVED</footer>

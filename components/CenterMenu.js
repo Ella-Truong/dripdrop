@@ -11,14 +11,14 @@ export default async function CenterMenu({
   //CASE 1: OVERVIEW PAGE (/menu)
   if (!selectedCategory){
     return (
-      <div className='space-y-12 w-full h-full pt-4'>
+      <div className='space-y-12 w-full h-full'>
         {Object.entries(categories).map(([tableName, categoryList])=>(
           <div key={tableName}>
             <h2 className = 'text-2xl font-bold mb-4 capitalize border-b-1 border-gray-300 pb-2'>{tableName}</h2>
             <div className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
               {categoryList.map(category => (
-                <Link key={category} href={`/menu/${tableName.toLocaleLowerCase()}/${encodeURIComponent(category)}`} className = 'flex items-center p-3 rounded-lg hover:shadow-lg cursor-pointer w-full'>
-                  <div className='w-28 h-28 relative flex-shrink-0'>
+                <Link key={category} href={`/menu/${tableName.toLocaleLowerCase()}/${encodeURIComponent(category)}`} className = 'flex flex-col items-center rounded-lg hover:shadow-lg cursor-pointer w-full'>
+                  <div className='w-28 h-28 relative'>
                     <Image 
                       src = {tableName === 'Drinks'? '/drink.avif' : '/snack5.webp'}
                       alt={category}

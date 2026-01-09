@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import FavoriteItem from '@/components/FavoriteItem'
 import Image from 'next/image'
 
@@ -8,7 +7,6 @@ export default function FavoritesPage() {
     const [favorites, setFavorites] = useState([])
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
-    const router = useRouter()
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -31,12 +29,12 @@ export default function FavoritesPage() {
     }, [])
 
     return (
-        <div className='mx-auto max-w-5xl py-12'>
+        <div className='mx-auto max-w-2xl py-8 px-4 mb-100'>
             <h1 className='text-3xl text-pink-500 text-center font-serif font-bold mb-8'>Your Favorites</h1>
 
             {loading && (
                 <div className='flex justify-center items-center'>
-                    <Image src='/loading.png' alt='Loading' width={80} height={80} />
+                    <Image src='/loading1.png' alt='Loading' width={80} height={80}/>
                 </div>
             )}
 

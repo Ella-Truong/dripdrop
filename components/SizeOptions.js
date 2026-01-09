@@ -10,7 +10,7 @@ export default function SizeOptions({ item, value, onChange }) {
         Grande: 70,
         Venti: 90,
     }
-    const DEFAULT_ZISE = 60
+    const DEFAULT_ZISE = 70
 
     return (
         <div className='flex gap-15 pt-10 items-center'>
@@ -24,9 +24,9 @@ export default function SizeOptions({ item, value, onChange }) {
                     <button 
                         key={sizeName} 
                         type='button' 
-                        onClick={()=>onChange(sizeName)} 
+                        onClick={()=>onChange(isSelected? null : sizeName)} 
                         className={`rounded p-3 flex items-center gap-4 transition 
-                            ${isSelected? 'border-black hover:bg-gray-100' : 'border-gray-300 hover:border-gray-500'}`}
+                            ${isSelected? 'underline decoration-4 decoration-pink-300' : ''}`}
                     >
                         <Image
                             src="/coffee-size.png"

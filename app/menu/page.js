@@ -5,7 +5,7 @@ export default async function MenuPage() {
     const categories = await getCategories()
 
     return (
-        <div className="animate-fadeInDown px-6 py-8">
+        <div className="animate-fadeInDown px-6 py-6">
             <CenterMenu categories={categories} />
         </div>
     )

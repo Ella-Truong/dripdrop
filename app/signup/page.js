@@ -4,10 +4,10 @@ import Image from "next/image";
 
 export default function SignUpPage() {
     return (
-        <div className="relative min-h-screen w-full">
+        <div className="min-h-screen w-full">
             {/* Background Image */}
             <Image
-                src='/login11.jpg'
+                src='/bg10.jpg'
                 alt='Sign Up background'
                 fill
                 className='object-cover'

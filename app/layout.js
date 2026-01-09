@@ -1,30 +1,45 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
-import { supabaseServer } from '../lib/supabase/serverClient'
 import './globals.css'
 
-export const metadata = {
-    title: 'Drinks Store | Coffee, Tea, & Seasonal Drinks',
-    description: 'Discover fresh coffee, tea, smoothies, and seasonal drinks. Browse our full menu and order your favorites online.'
+export default function RootLayout({ children }) {
+  const [user, setUser] = useState(null)
+
+  // Fetch user profile on first load
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('/api/profile', { credentials: 'include' })
+        if (res.ok) {
+          const data = await res.json()
+          setUser(data)
+        }
+      } catch (err) {
+        console.error('Failed to fetch profile:', err)
+      }
+    }
+    fetchProfile()
+  }, [])
+
+  return (
+    <html lang="en">
+      <body className='flex flex-col min-h-screen'>
+        <div className='top-0 z-50'>
+          <NavigationBar user={user} setUser={setUser} />
+        </div>
+        <div className="flex-1 overflow-auto">{children}</div>
+        <div className='flex-shrink-0'>
+          <Footer/>
+        </div>
+      </body>
+    </html>
+  )
 }
 
-export default async function RootLayout({children}) {
-    const supabase = await supabaseServer()
 
-    const {data} = await supabase.auth.getSession()
-    // session can either be an object or Null
-    const session = data?.session ?? null
-
-    return (
-        <html lang="en">
-            <body className='flex flex-col min-h-screen'>
-                <NavigationBar session={session} />
-                <div className="flex-1 flex min-h-0">{children}</div>
-                <Footer/>
-            </body>
-        </html>
-    )
-}
 
 // Navigation and Footer are always visible when user move between pages on the app, so put these components in the root layout.
 

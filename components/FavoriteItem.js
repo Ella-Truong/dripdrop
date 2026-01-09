@@ -1,4 +1,5 @@
 'use client'
+
 import {useState} from 'react'
 import Image from 'next/image'
 
@@ -35,28 +36,30 @@ export default function FavoriteItem({favorite}) {
 
     if (removed) return null
 
+
     /* Start to display a favorite item:
        1. Parse topping options that user picked if it is stored as JSON
        2. Using these options to design the display of an tiem
     */
     let optionArray = []
 
-    if (favorite.options) {
+    if (favorite?.options) {
         try {
-            optionArray = typeof favorite.options === 'string'
+            const parsed = typeof favorite.options === 'string'
                 ? JSON.parse(favorite.options)
-                : favorite.options  // already an object/array
-        } catch(error) {
+                : favorite.options
+            optionArray = Array.isArray(parsed) ? parsed : []
+        } catch (error) {
             console.error('Failed to parse options:', error)
-         }
+        }
     }
 
 
     return (
-        <div className='flex items-center justify-between p-4 border rounded-md shadow-sm'>
+        <div className='flex h-30 gap-20 items-center justify-between p-4 border-2 border-pink-500 rounded-2xl shadow-sm animate-fadeInUp'>
             <div className='flex items-center gap-4'>
                 <Image
-                    src={favorite.table === 'drinks'? '/drink.avif' : '/snack5.webp'}
+                    src={favorite.product_type === 'drinks'? '/drink.avif' : '/snack5.webp'}
                     alt={favorite.name}
                     width={64}
                     height={64}
@@ -66,7 +69,9 @@ export default function FavoriteItem({favorite}) {
                     <h3 className='font-semibold'>{favorite.name}</h3>
                     {favorite.size && <p className='text-sm text-gray-500'>Size: {favorite.size}</p>}
                     {optionArray.length > 0 && (
-                        <p className='text-sm text-gray-500'>{optionArray.join(', ')}</p>
+                        <p className='text-sm text-gray-500'>
+                            {optionArray.map(opt => typeof opt === 'string' ? opt : opt.name).join(', ')}
+                        </p>
                     )}
                 </div>
             </div>
@@ -74,7 +79,7 @@ export default function FavoriteItem({favorite}) {
             <button
                 onClick={handleRemove}
                 disabled ={loading}
-                className={`ml-4 w-10 h-10 flex items-center justify-center rounded bg-red-600 text-white font-bold hover:bg-red-700 
+                className={`ml-4 w-5 h-5 flex items-center justify-center text-black bg-pink-500 rounded-xl font-bold text-white
                     ${loading? 'bg-gray-400 cursor-not-allowed' : ''}`}
             >
                 {loading? '...' : '-'}

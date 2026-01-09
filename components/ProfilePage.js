@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react"
+import Image from 'next/image'
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null)
@@ -22,13 +23,20 @@ export default function ProfilePage() {
     fetchProfile()
   }, [])
 
-  if (loading) return <p>Loading...</p>
+  if (loading) {
+    return (
+      <div className='flex justify-center items-start mt-20 w-full h-full'>
+        <Image src='/loading1.png' alt='Loading' width={80} height={80}/>
+      </div>
+    )
+  }
+
   if (error) return <p>{error}</p>
   if (!profile) return <p>No profile found</p>
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white/20 rounded-3xl shadow-xl mt-8">
-      <h1 className="text-3xl font-bold mb-4">Profile</h1>
+    <div className="max-w-130 p-10 m-auto text-left font-serif rounded-4xl shadow-xl mt-8 bg-pink-300 items-center justify-center animate-fadeInDown">
+      <h1 className="text-3xl text-left font-bold mb-4">Profile</h1>
       <p><strong>Username:</strong> {profile.username}</p>
       <p><strong>Email:</strong> {profile.email}</p>
       <p><strong>Phone:</strong> {profile.phone}</p>

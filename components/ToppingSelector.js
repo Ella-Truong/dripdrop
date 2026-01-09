@@ -32,13 +32,13 @@ export default function ToppingSelector({item, value=[], onChange}){
                 return (
                     <div key = {opt.name} className='flex justify-between items-center border rounded px-3 py-2'>
                         <div>
-                            {opt.name} {opt.price ? `  $${opt.price}` : ''}
+                            {opt.name} {opt.price ? `$${opt.price}` : ''}
                         </div>
                         <button 
                             type='button'
                             onClick = {() => handleToggle(opt)}
                             className = {`w-8 h-8 flex items-center justify-center rounded font-bold text-black transition 
-                                ${isSelected ? 'text-gray-600' : 'text-black hover:text-[#436852]'}`}
+                                ${isSelected ? 'bg-pink-300' : ''}`}
                         >
                             {isSelected ? '-' : '+'}
                         </button>
