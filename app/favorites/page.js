@@ -6,7 +6,7 @@ import Image from 'next/image'
 export default function FavoritesPage() {
     const [favorites, setFavorites] = useState([])
     const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -19,9 +19,9 @@ export default function FavoritesPage() {
                 const data = await res.json()
                 setFavorites(data)
             } else if (res.status === 401) {
-                setError('Please log in to see your favorites.')
+                setError('Please log in to see your favorites!')
             } else {
-                setError('Failed to fetch favorites.')
+                setError('Failed to fetch favorites!')
             }
             setLoading(false)
         }

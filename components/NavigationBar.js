@@ -13,8 +13,7 @@ export default function NavigationBar({ user, setUser }) {
     await fetch('/api/logout', { method: 'POST', credentials: 'include' })
     setUser(null) // immediately update NavBar
     setDropdownOpen(false)
-    router.push('/')
-    
+    router.push('/')  
   }
 
   const navItems = [
@@ -84,7 +83,7 @@ export default function NavigationBar({ user, setUser }) {
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-pink-500"
                   >
-                    Logout
+                    Sign out
                   </button>
                 </div>
               )}

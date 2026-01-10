@@ -8,24 +8,35 @@ export default function AddToCart({item, size, options}){
     const handleAddToCart = async () => {
         if (!item) return 
         setLoading(true)
+        
+        //calculate total price
+        let optionsPrice = options?.reduce((sum, opt) => sum + (opt.price || 0), 0) || 0
+        let total = item.price + optionsPrice
 
         try {
             const payload = {
                 name: item.name,
                 product_id: item.id,
                 product_type: item.table,
-                size, 
-                options,
-                quanity: 1
+                size,
+                options: JSON.stringify(options ?? {}),
+                quantity: 1,
+                price: total
             }
 
             const res = await fetch('/api/cart', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             })
 
-            if (!res.ok) throw new Error('Failed to add to cart')
+            if (res.status === 401) {
+               window.location.href='/login'
+               return
+            }
+
+            if (!res.ok) throw new Error('Faied to add items to cart!')
             setAdded(true)
 
         } catch(error) {
@@ -36,6 +47,7 @@ export default function AddToCart({item, size, options}){
             setLoading(false)
         }
     }
+
 
     return (
         <button

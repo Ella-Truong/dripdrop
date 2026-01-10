@@ -1,100 +1,130 @@
 //store the cart in databse and keep a local copy in React to avoid repeated parsing or slow access. 
 /*
 Full CRUD for cart. 
-GET -> fetch cart
+GET -> fetch cart items
 POST -> add or update product quantity to cart
-DELETE -> remove a product
+DELETE -> remove an item
 */
 import { supabaseServer } from "@/lib/supabase/serverClient";
+import { getServerUser } from "@/lib/supabase/serverClient";
 
-// ----------------------------------------------------- GET cart - fetch user cart ---------------------------------------------------------
+
+// -------------------- GET Cart - fetch user cart ---------------------
 
 export async function GET() {
-    // create a Supabase client for server
-    const supabase = await supabaseServer()
-
-    /* To fetch cart data, must know which user to fetch -> check if user is logged in or not first.
-     Data here is not product data, it is authentication data that is included in session key, its values includes user:{ id, ...}, access_token,...
-     After getting session.user.id, then can fetch the cart */
-    const { data: { user } } = await supabase.auth.getUser()
-
-    // if user is not logged in, then no active session exists
-    if (!user) return new Response("Unauthorized", { status: 401 })
-
-    // session exists -> user is logged in
-    const { data, error } = await supabase
-        .from('cart_items')
-        .select('*')
-        .eq('user_id', user.id)
-
-    if (error) return new Response(error.message, { status: 500 })
-    
-        // convert JavaScript object/array (data) into a JSON string
-    return new Response(JSON.stringify(data), { status: 200 })
-
-    /*
-    Response here is Response object, not actual data. 
-    It contains metadata like:
-       res.status -> 200, 401, ...
-       res.headers -> HTTP headers
-       res.body -> the raw response stream (usually text)
-    
-    new Response(JSON.stringify(data)) return something like:
-    [{'id':'1','product_id':'2','quanity':'3'}, {...}]
-     */
-}
-
-// ----------------------------------------------------- POST cart - add/update item ---------------------------------------------------------
-
-export async function POST(req) {
-    const supabase = await supabaseServer()
-
-    //check current session first
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return new Response('Unauthorized', { status: 401 })
-
-    const { name, product_id, product_type, quanity, size, options } = await req.json()
-
-    const { data, error } = await supabase
-        .from('cart_items')
-        .insert([
-            { 
-                user_id: session.user.id, 
-                name, 
-                product_id, 
-                product_type, 
-                quanity, 
-                size, 
-                options
-            }
-        ])
-    
-    if (error) return new Response(error.message, {status: 500})
-    
-    return new Response(JSON.stringify(data), {status: 200})   
-}
-
-
-// ------------------------------------------------------------ DELETE an item ------------------------------------------------------------------
-
-export async function DELETE(req){
-    const supabase = await supabaseServer()
-
-    const {data: {session}} = await supabase.auth.getUser()
+    const { user, supabase } = await getServerUser()
     if (!user) return new Response('Unauthorized', {status: 401})
     
-    // get product_id from request body
-    const {product_id} = await req.json()
-    if (!product_id) return new Response("Product ID required", { status: 400 })
-
-    const {data, error} = await supabase
+    const {data, error} = await supabase 
        .from('cart_items')
-       .delete()
-       .eq('user_id', user.id)
-       .eq('product_id', product_id)
+       .select('*')
+       .eq('user_id', user.id);
 
-    if (error) return new Response(error.message, {status: 500})
+    if(error) return new Response(error.message, {status: 500})
     return new Response(JSON.stringify(data), {status: 200})
+}
+    
+
+
+// -------------------- POST cart - add/update item -----------------------
+
+export async function POST(req) {
+    const {user, supabase} = await getServerUser()
+    if (!user) return new Response('unauthorized', {status: 401})
+
+    try {
+        const {name, product_id, product_type, size, options,quantity,price} = await req.json()
+        
+        const optionString = JSON.stringify(options ?? {})
+
+        //check if item is already in cart
+        const {data : existingItem, error: selectError} = await supabase
+           .from('cart_items') 
+           .select('*')
+           .eq('user_id', user.id)
+           .eq('product_id', product_id)
+           .eq('product_type', product_type)
+           .eq('size', size)
+           .eq('options', optionString)
+           .maybeSingle()
+
+        if(selectError){
+            console.error('Supabase select error', selectError)
+            return new Response(selectError.message, {status: 500})
+        }
+
+        let data, error
+
+        if (existingItem){
+            //item exists -> increment quantity
+            const newQuantity = existingItem.quantity + 1
+            const newPrice = existingItem.price*newQuantity
+
+            const updateResult = await supabase
+                .from('cart_items')
+                .update({
+                    quantity: newQuantity,
+                    price: newPrice
+                })
+                .eq('id', existingItem.id)
+            
+            data = updateResult.data
+            error = updateResult.error
+
+        }else{
+            const insertResult = await supabase
+                .from('cart_items')
+                .insert([
+                    {
+                        user_id: user.id,
+                        name,
+                        product_type,
+                        product_id,
+                        size,
+                        options,
+                        quantity: 1,
+                        price
+                    }
+                ])
+
+            data = insertResult.data
+            error = insertResult.error
+        }
+
+        if (error) {
+            console.error("Supabase insert error:", error)
+            return new Response(error.message, {status: 500})
+        }
+        return new Response(JSON.stringify(data), {status: 200})
+    }catch (err) {
+        console.error('Unexpected server error:', err)
+        return new Response('Internal server error', {status: 500})
+    }
+}
+
+
+// ---------------------------- DELETE an item -----------------------------
+
+export async function DELETE(req){
+    const {user, supabase} = await getServerUser()
+    if(!user) return new Response('Unauthorized', {status: 401})
+
+    try {
+        const {id} = await req.json()
+        if(!id) return new Response('Item ID required', {status: 400})
+        
+        const {data, error} = await supabase
+           .from('cart_items')
+           .delete()
+           .eq('id', id)
+           .eq('user_id', user.id)
+
+        if(error) return new Response(error.message, {status: 500})
+        return new Response(JSON.stringify(data), {status: 200})
+    }catch (err) {
+    console.error("Unexpected server error:", err);
+    return new Response("Internal server error", { status: 500 });
+  }
 }
 
 

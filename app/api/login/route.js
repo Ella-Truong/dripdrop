@@ -16,7 +16,7 @@ export async function POST(req) {
       message = 'No account found with this email. Please sign up first.';
     }
 
-    return new Response(message, { status: 401 }); // ✅ use the new message
+    return new Response(message, { status: 401 }); // use the new message
   }
 
 

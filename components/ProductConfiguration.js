@@ -34,7 +34,7 @@ export default function ProductConfiguration({item}){
                 <AddToCart
                     item={item}
                     size={size}
-                    ptions={options}
+                    options={options}
                 />
 
                <AddFavorite
