@@ -38,9 +38,9 @@ Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app
 
 1. **Clone the repository**
 
-  `git clone https://github.com/YourUsername/dripdrop.git`
+    `git clone https://github.com/YourUsername/dripdrop.git`
   
-   cd dripdrop
+     cd dripdrop
 
 2. **Install dependencies**
    `npm install`
