@@ -39,6 +39,7 @@ Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app
 1. **Clone the repository**
 
   `git clone https://github.com/YourUsername/dripdrop.git`
+  
    cd dripdrop
 
 2. **Install dependencies**
@@ -46,8 +47,8 @@ Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app
 
 3. **Set up environment variables**
    
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+  - NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 4. **Run the app locally**
    `npm run dev`
