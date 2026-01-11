@@ -71,11 +71,8 @@ Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app
 ---
 
 ## 🌟 Future Plans
-
-- Add more categories for drinks and snacks
-- Implement search and filter functionality
-- Enhance real-time updates using Supabase subscriptions
 - 🔒 Add a password setup feature with validation rules (minimum length, uppercase, number, special character)  
 - 🖼 Add **unique images for each drink and snack** instead of placeholders
+-📍 Add a feature to **find nearby locations** or display store locations
 
    
