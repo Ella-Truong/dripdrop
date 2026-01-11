@@ -46,11 +46,13 @@ Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app
    `npm install`
 
 3. **Set up environment variables**
+   
    ⚠️ Note: This project requires a `.env.local` file with your Supabase credentialsThis project requires a `.env.local` file with your Supabase credentials:
   - NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
   - NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 4. **Run the app locally**
+   
    `npm run dev`
 
 5. Open `http://localhost:3000` in your browser
