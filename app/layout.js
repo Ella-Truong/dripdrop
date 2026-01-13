@@ -4,6 +4,19 @@ import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import './globals.css'
 
+export const metadata={
+  title: {
+    default: 'DripDrop',
+    template: '%s | DripDrop'
+  },
+  description: 'Order drinks and snacks online with DripDrop',
+  keywords: ['coffee','drinks','snacks','DripDrop'],
+  authors: [{name: 'Ella Truong'}],
+  icons: {
+    icon: '/loading1.png'
+  }
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

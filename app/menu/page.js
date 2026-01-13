@@ -1,6 +1,10 @@
 import CenterMenu from '../../components/CenterMenu.js'
 import { getCategories } from '@/lib/queries/getCategories.js'
 
+export const metadata = {
+    title: 'Menu'
+}
+
 export default async function MenuPage() {
     const categories = await getCategories()
 

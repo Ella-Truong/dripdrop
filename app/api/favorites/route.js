@@ -2,7 +2,6 @@
 import { getServerUser, supabaseServer } from "@/lib/supabase/serverClient";
 
 
-
 // ----------------- GET Favorites -----------------
 export async function GET() {
   const { user, supabase } = await getServerUser();
