@@ -55,7 +55,7 @@ export default function AddToCart({item, size, options}){
             onClick={handleAddToCart}
             disabled={loading || added}
             className={`mt-4 w-full py-3 rounded tracking-wider font-semibold text-black transition 
-                ${added ? 'bg-gray-600 text-pink-400 cursor-not-allowed' : 'border-2 rounded-3xl border-pink-400 hover:bg-pink-300 hover:text-white'}`}
+                ${added ? 'bg-gray-600 rounded-3xl text-pink-400 cursor-not-allowed' : 'border-2 rounded-3xl border-pink-400 hover:bg-pink-300 hover:text-white'}`}
         >
             {added ? 'Added To Cart' : loading ? 'Adding...' : 'Add To Cart'}
         </button>

@@ -11,10 +11,10 @@ export default async function CenterMenu({
   //CASE 1: OVERVIEW PAGE (/menu)
   if (!selectedCategory){
     return (
-      <div className='space-y-12 w-full h-full'>
+      <div className='space-y-10 flex flex-col w-full h-full mb-80'>
         {Object.entries(categories).map(([tableName, categoryList])=>(
           <div key={tableName}>
-            <h2 className = 'text-2xl font-bold mb-4 capitalize border-b-1 border-gray-300 pb-2'>{tableName}</h2>
+            <h1 className = 'text-2xl font-bold mb-4 capitalize border-b-1 border-gray-300 pb-2'>{tableName}</h1>
             <div className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
               {categoryList.map(category => (
                 <Link key={category} href={`/menu/${tableName.toLocaleLowerCase()}/${encodeURIComponent(category)}`} className = 'flex flex-col items-center rounded-lg hover:shadow-lg cursor-pointer w-full'>
@@ -43,8 +43,8 @@ export default async function CenterMenu({
   })
 
   return (
-    <div className='w-full h-full flex flex-col'>
-      <h1 className='text-2xl font-bold pt-10 mb-5'>{decodeURIComponent(selectedCategory)}</h1>
+    <div className='w-full h-full flex flex-col mb-80'>
+      <h1 className='text-2xl font-bold mb-5'>{decodeURIComponent(selectedCategory)}</h1>
       <div className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
       {items.map(item => (
         <Link key = {item.id} href={`/menu/product/${table}/${item.id}`} className = 'flex flex-col items-center justify-start rounded-lg hover:shadow-lg transition shadow-sm h-50 w-full p-4'>

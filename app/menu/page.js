@@ -9,8 +9,10 @@ export default async function MenuPage() {
     const categories = await getCategories()
 
     return (
-        <div className="animate-fadeInDown px-6 py-6">
-            <CenterMenu categories={categories} />
+        <div className='min-h-screen flex flex-col'>
+            <div className="animate-fadeInDown flex-1 px-6">
+                <CenterMenu categories={categories} />
+            </div>
         </div>
     )
 }
