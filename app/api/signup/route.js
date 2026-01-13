@@ -2,7 +2,7 @@ import { supabaseServer } from "@/lib/supabase/serverClient";
 
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const { phone, username, email, password } = await req.json();
 
     const supabase = await supabaseServer();
 
@@ -10,13 +10,16 @@ export async function POST(req) {
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
+      options:{
+        data:{
+          display_name: username,
+          phone: phone
+        }
+      }
     });
 
     if (signUpError) return new Response(signUpError.message, { status: 400 });
     if (!signUpData.user) return new Response("User creation failed", { status: 500 });
-
-    // Don’t insert profile yet! Wait for email confirmation
-    // The user will click the confirmation link in email
 
     return new Response(
       JSON.stringify({

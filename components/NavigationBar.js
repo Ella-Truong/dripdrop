@@ -65,11 +65,12 @@ export default function NavigationBar({ user, setUser }) {
                 className="px-4 py-1.5 rounded-full border border-pink-300 text-pink-500 hover:bg-pink-50 transition flex items-center gap-2"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                {user.username}
+                {user.username || user.email}
                 <span className={`text-[0.65rem] transform transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}>
                    ▼
                 </span>
               </button>
+
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
                   <Link

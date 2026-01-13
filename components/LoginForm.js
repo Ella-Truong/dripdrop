@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-export default function LoginForm({ setUser }) {
+export default function LoginForm({setUser}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -39,10 +39,13 @@ export default function LoginForm({ setUser }) {
 
       // Fetch user profile immediately after login to update NavBar
       const profileRes = await fetch('/api/profile', { credentials: 'include' })
-      if (profileRes.ok && setUser) {
+      if (!profileRes.ok) {
+        console.error('Failed to fecth profile', await profileRes.text())
+      }else{
         const profileData = await profileRes.json()
-        router.refresh()
+        setUser(profileData)
       }
+
       router.push('/')
       
     } catch (err) {

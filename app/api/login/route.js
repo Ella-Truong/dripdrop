@@ -19,6 +19,16 @@ export async function POST(req) {
     return new Response(message, { status: 401 }); // use the new message
   }
 
+  const user = data.user
+  console.log(user.user_metadata.phone)
+  
+  //ensure profile exists 
+  await supabase.from('profiles').upsert({
+    id: user.id,
+    email: user.email,
+    username: user.user_metadata.display_name,
+    phone: user.user_metadata.phone
+  })
 
   // Set cookies if login is successful
   const accessCookieOptions = "Path=/; HttpOnly; SameSite=Lax; Secure; Max-Age=3600";

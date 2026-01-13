@@ -3,7 +3,7 @@
 import LoginForm from "@/components/LoginForm";
 import Image from "next/image";
 
-export default function LoginPage({ setUser }) {
+export default function LoginPage({setUser}) {
     return (
         <div className="min-h-screen w-full">
             <Image
@@ -18,7 +18,7 @@ export default function LoginPage({ setUser }) {
                 <div className="w-full max-w-md p-8 bg-white/30 rounded-3xl shadow-xl border border-pink-200 backdrop-blur-sm">
                     <h1 className="text-3xl font-bold text-pink-400 mb-3 text-center">Welcome Back!</h1>
                     <p className="text-center text-pink-300 mb-6 animate-pulse">✨ Login to continue ✨</p>
-                    <LoginForm setUser={setUser} />
+                    <LoginForm setUser={setUser}/>
                     <p className="mt-4 text-center text-gray-300 text-sm">
                         Don't have an account?{' '}
                         <a href='/signup' className='text-pink-400 font-semibold hover:underline'>Sign Up</a>

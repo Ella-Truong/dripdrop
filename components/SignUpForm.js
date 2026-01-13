@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
 
-export default function SignUpForm() {
+export default function SignUpForm({setUser}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
@@ -20,7 +20,7 @@ export default function SignUpForm() {
       const signUpRes = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ phone, username, email, password }),
       })
 
       if (!signUpRes.ok) {
@@ -43,20 +43,15 @@ export default function SignUpForm() {
         return
       }
 
-      // Create profile using username & phone
-      const profileRes = await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, phone }),
-      })
-
-      if (!profileRes.ok) {
-        const msg = await profileRes.text()
-        console.log('Profile creation failed:', msg)
+       // 3️⃣ Fetch profile
+      const profileRes = await fetch('/api/profile', { credentials: 'include' })
+      if (profileRes.ok) {
+        const profileData = await profileRes.json()
+        setUser(profileData)  // update NavBar immediately
       }
 
-      // Success → redirect to dashboard/favorites
-      router.push('/favorites')
+      // Success → redirect to dashboard
+      router.push('/')
 
     } catch (err) {
       console.error(err)
