@@ -1,9 +1,11 @@
+// components/LoginForm.js
 'use client'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useUser } from '../app/context/UserContext'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-
-export default function LoginForm({setUser}) {
+export default function LoginForm() {
+  const { setUser } = useUser()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -16,7 +18,6 @@ export default function LoginForm({setUser}) {
     setLoading(true)
 
     try {
-      // Login API
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -24,30 +25,20 @@ export default function LoginForm({setUser}) {
         credentials: 'include',
       })
 
-      const msg = await res.text()
-
       if (!res.ok) {
-        let displayMsg = msg
-        if (msg.includes('Email not confirmed') || msg.includes('User has not confirmed')) {
-          displayMsg = 'Please confirm your email before logging in!'
-        } else if (msg.includes('Invalid login credentials') || msg.includes('User not found')) {
-          displayMsg = 'No account found with this email. Please sign up first.'
-        }
-        setError(displayMsg)
+        const msg = await res.text()
+        setError(msg)
         return
       }
 
-      // Fetch user profile immediately after login to update NavBar
+      // fetch profile
       const profileRes = await fetch('/api/profile', { credentials: 'include' })
-      if (!profileRes.ok) {
-        console.error('Failed to fecth profile', await profileRes.text())
-      }else{
+      if (profileRes.ok) {
         const profileData = await profileRes.json()
-        setUser(profileData)
+        setUser(profileData) // <-- works now
       }
 
       router.push('/')
-      
     } catch (err) {
       console.error(err)
       setError('Network error. Please try again.')
@@ -58,35 +49,11 @@ export default function LoginForm({setUser}) {
 
   return (
     <form onSubmit={handleLogin} className="flex flex-col gap-4">
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-        autoFocus
-        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-        className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300"
-      />
-
-      <button
-        type="submit"
-        disabled={loading}
-        className={`w-full py-3 font-semibold rounded-xl transition ${
-          loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'
-        }`}
-      >
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300" autoFocus />
+      <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required className="w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300" />
+      <button type="submit" disabled={loading} className={`w-full py-3 font-semibold rounded-xl transition ${loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-400 hover:bg-pink-500 text-white'}`}>
         {loading ? 'Logging in...' : 'Login'}
       </button>
-
       {error && <p className="text-red-600 text-center mt-2">{error}</p>}
     </form>
   )

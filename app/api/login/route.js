@@ -20,8 +20,7 @@ export async function POST(req) {
   }
 
   const user = data.user
-  console.log(user.user_metadata.phone)
-  
+
   //ensure profile exists 
   await supabase.from('profiles').upsert({
     id: user.id,

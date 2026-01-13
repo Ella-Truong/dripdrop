@@ -1,8 +1,11 @@
 'use client'
+
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
+import { useUser } from '../app/context/UserContext'  // <-- import context
 
-export default function SignUpForm({setUser}) {
+export default function SignUpForm() {
+  const { setUser } = useUser() // <-- get setUser from context
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
@@ -16,7 +19,7 @@ export default function SignUpForm({setUser}) {
     setLoading(true)
 
     try {
-      // Sign up the user
+      // 1️⃣ Sign up the user
       const signUpRes = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,7 +32,7 @@ export default function SignUpForm({setUser}) {
         return
       }
 
-      // Log in immediately to get session cookies (RLS-safe)
+      // 2️⃣ Log in immediately to get session cookies
       const loginRes = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,18 +42,18 @@ export default function SignUpForm({setUser}) {
 
       if (!loginRes.ok) {
         const msg = await loginRes.text()
-        setError(`${msg}`)
+        setError(msg)
         return
       }
 
-       // 3️⃣ Fetch profile
+      // 3️⃣ Fetch profile immediately after login
       const profileRes = await fetch('/api/profile', { credentials: 'include' })
       if (profileRes.ok) {
         const profileData = await profileRes.json()
         setUser(profileData)  // update NavBar immediately
       }
 
-      // Success → redirect to dashboard
+      // 4️⃣ Success → redirect to dashboard/home
       router.push('/')
 
     } catch (err) {
