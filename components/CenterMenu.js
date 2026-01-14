@@ -11,7 +11,7 @@ export default async function CenterMenu({
   //CASE 1: OVERVIEW PAGE (/menu)
   if (!selectedCategory){
     return (
-      <div className='space-y-10 flex flex-col w-full h-full mb-80'>
+      <div className='space-y-10 flex flex-col w-full h-full pt-8 mb-80'>
         {Object.entries(categories).map(([tableName, categoryList])=>(
           <div key={tableName}>
             <h1 className = 'text-2xl font-bold mb-4 capitalize border-b-1 border-gray-300 pb-2'>{tableName}</h1>
