@@ -7,7 +7,7 @@ This diagram shows the **full authentication flow** in DripDrop — from **user 
 ## Full Flow: Sign Up → Login → Session → Favorites/Cart
 
 ### Sign Up 
-```mermaid
+```text
 
 1️⃣ User visits site 🌐
        │
