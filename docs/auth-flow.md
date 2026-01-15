@@ -44,7 +44,7 @@ This diagram shows the **full authentication flow** in DripDrop — from **user 
 ---
 ### Sign In
 
-
+```text
 1️⃣1️⃣ User clicks "Sign in" button 🖱️ on nav bar
        │
        ▼
@@ -65,12 +65,12 @@ This diagram shows the **full authentication flow** in DripDrop — from **user 
        │
        ▼
 1️⃣7️⃣ User is now logged in → sees user's username on navigation bar 🎨
-
+```
 ---
 
 ### Accessing Favorites / Cart 👀
 
-
+```text
 1️⃣ User clicks "Favorites" button 🖱️ or "Cart" icon on nav bar
        │
        ▼
@@ -92,3 +92,4 @@ This diagram shows the **full authentication flow** in DripDrop — from **user 
        │
        └─ If NOT logged in ❌ → redirect to Sign Up page 🔁
 
+```
