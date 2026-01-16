@@ -51,11 +51,22 @@ Managing user state in UserProvider is convenient for global access and instant 
 
 
 ## 2. Manually setting Cookies Configuration 
+
 ### Why? 
-- Prevent the client from accessing the refresh token, increasing security against XSS atacks
+- Prevent the client from accessing the refresh token, increasing security against XSS attacks
 - Avoids automatic logout after the default 1-hour access token expiry
 - Provide consistent authentication across page reloads and multiple tabs
 - Allows full control over refresh token flow and server-side authorization checks
 
+### Decision:
+- Only store the refresh token in an HTTP-only server side cookie and set `persistSession: false` in the Supabase client -> tell Supabase not to store the session (access + refresh tokens) in memory and localStorage on the browser.
+- Manually refresh access tokens on the server whenever they expire, ensuring all Supabase calls have a valid token.
+
+### Trade-offs:
+- More complex to implement (manual cookies & refresh logic)
+- Browser cannot access tokens; all refreshes go through the server
+- Slight extra latency and server load for token refresh
+- Initial render may briefly show user = null
+  
 
 
