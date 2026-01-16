@@ -53,7 +53,7 @@ Managing user state in UserProvider is convenient for global access and instant 
 ## 2. Manually setting Cookies Configuration 
 
 ### Why? 
-- Prevent the client from accessing the refresh token, increasing security against XSS attacks
+- Prevent the client from accessing the refresh token, increasing security against `XSS attacks`
 - Avoids automatic logout after the default 1-hour access token expiry
 - Provide consistent authentication across page reloads and multiple tabs
 - Allows full control over refresh token flow and server-side authorization checks
