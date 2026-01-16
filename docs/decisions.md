@@ -31,7 +31,7 @@
    - Initializes `user` state and fetches profile
 
 
-3. Provide valie to children:
+3. Provide value to children:
    ```text
    <UserContext.Provider value={{user, setUser}}>
       {children}
@@ -39,3 +39,9 @@
    ```
    - All nested components can access `user` and `setUser`
 
+4. Consume in child component:
+   ```text
+   const {user, setUser} = useUser()
+   ```
+   - `useUser()` is a custom hook: `export const useUser = () => useContext(UserContext)`
+   - Components line `NavigationBar` can render UI based on `user` or update it on login/logout 
