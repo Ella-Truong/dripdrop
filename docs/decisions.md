@@ -44,4 +44,8 @@
    const {user, setUser} = useUser()
    ```
    - `useUser()` is a custom hook: `export const useUser = () => useContext(UserContext)`
-   - Components line `NavigationBar` can render UI based on `user` or update it on login/logout 
+   - Components line `NavigationBar` can render UI based on `user` or update it on login/logout
+  
+### Trade-offs:
+Managing user state in UserProvider is convenient for global access and instant UI updates but requires client-side fetching, may show a brief unauthenticated state on first render, and depends on additional logic for token refresh and server side security check (handled in lib/supabase/serverClient.js)
+
