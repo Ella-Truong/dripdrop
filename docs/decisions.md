@@ -31,5 +31,11 @@
    - Initializes `user` state and fetches profile
 
 
-
+3. Provide valie to children:
+   ```text
+   <UserContext.Provider value={{user, setUser}}>
+      {children}
+   </UserContext.Provider>
+   ```
+   - All nested components can access `user` and `setUser`
 
