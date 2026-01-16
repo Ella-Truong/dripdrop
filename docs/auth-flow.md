@@ -61,7 +61,7 @@ This diagram shows the **full authentication flow** in DripDrop — from **user 
 1️⃣5️⃣ Supabase verifies credentials and returns session tokens 🔑
        │
        ▼
-1️⃣6️⃣ Frontend stores session (cookies or local storage) 🖥️
+1️⃣6️⃣ Frontend stores session (cookies) 🖥️
        │
        ▼
 1️⃣7️⃣ User is now logged in → sees user's username on navigation bar 🎨
