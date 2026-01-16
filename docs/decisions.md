@@ -19,4 +19,13 @@
    
    - Stores shared state `{user, setUSer}`
 
+2. Wrap components with provider:
+   ```text
+   <UserProvider>
+      <NavigationBar />
+      <div>{children}</div>
+      <Footer/>
+   </UserProvder>
+   ```
+
 
