@@ -1,7 +1,7 @@
 # Decisions vs Trade-offs
 
 ## 1. UserProvider Component
-   
+### Why?
    It would be better to manage one shared authenticated user across all pages in website. Components like `NavigationBar` or pages like `favorites`, `cart items`, and `profile` always have the current user without repeated fetches.
 
 ### Decision: 
