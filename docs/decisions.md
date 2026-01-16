@@ -50,7 +50,7 @@
 Managing user state in UserProvider is convenient for global access and instant UI updates but requires client-side fetching, may show a brief unauthenticated state on first render, and depends on additional logic for token refresh and server side security check (handled in lib/supabase/serverClient.js)
 
 
-## 2. Manual Cookies Configuration 
+## 2. Manually setting Cookies Configuration 
 ### Why? 
 - Prevent the client from accessing the refresh token, increasing security against XSS atacks
 - Avoids automatic logout after the default 1-hour access token expiry
