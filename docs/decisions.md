@@ -13,15 +13,10 @@
     - Shares state across pages vias context and `useContext`
 - Wrap it around the **Root Layout** (app/layout.js) so all client components have access to the user context
 
-### Concept: 
-- `useContext` : allow any child component to access the value provided by a context without passing props through every level of the tree
-- Example:
-  
-   `const {user, setUser} = useUser();`
-
-  Here, `useUser()` is a *custom hook* that internally calls `useContext(UserContext)` to give access to the shared user state.
-
-
-  
+### Concept and Flow: 
+1. Create Context:
+   ` const UserContext = createContext()`
+   
+   - Stores shared state `{user, setUSer}`
 
 
