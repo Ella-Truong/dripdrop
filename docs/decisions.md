@@ -27,5 +27,9 @@
       <Footer/>
    </UserProvder>
    ```
+   - `<UserProvider>` internally uses `<UserContext.Provider>`
+   - Initializes `user` state and fetches profile
+
+
 
 
