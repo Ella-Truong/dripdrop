@@ -27,26 +27,6 @@ export default function Footer() {
             {/* Section 2: H3 Content */}
             <div className="text-center">
                 <h3 className="text-base font-semibold font-serif mb-3">Follow me for latest updates!</h3>
-                <div className='flex flex-col no-gap items-center justify-center'>
-                    <Link href='mailto:ellatruong95@gmail.com' className='flex items-center gap-2'>
-                        <Image
-                            src='/email.png'
-                            width={15}
-                            height={15}
-                            alt='My Email'
-                        />
-                        <h3 className='text-sm font-serif text-gray-600 hover:text-pink-400'>ellatruong95@gmail.com</h3>
-                    </Link>
-                    <Link href='tel:+17149024728' className='flex items-center gap-2'>
-                        <Image
-                            src='/cellphone.png'
-                            width={15}
-                            height={15}
-                            alt='My Phone Number'
-                        />
-                        <h3 className='text-sm font-serif text-gray-600 hover:text-pink-400'>xxx-xxx-xxxx</h3>
-                    </Link>
-                </div>
                 <footer className="text-center text-sm text-gray-500 mt-5"> © {new Date().getFullYear()} Ella Truong. ALL RIGHTS RESERVED</footer>
             </div>
         </div>
