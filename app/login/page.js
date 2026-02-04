@@ -14,7 +14,7 @@ export default function LoginPage({setUser}) {
             />
             <div className="absolute inset-0 bg-black/30 z-10"></div>
 
-            <div className="relative flex items-center justify-center p-2 z-20 font-serif tracking-wider animate-fadeInUp min-h[calc(100vh-4rem-7rem)]">
+            <div className="relative flex items-center justify-center p-2 z-20 font-serif tracking-wider animate-fadeInUp min-h-[calc(100vh-4rem-7rem)]">
                 <div className="w-10/12 sm:max-w-md  sm:p-8 p-6 bg-white/30 rounded-3xl shadow-xl border border-pink-200 backdrop-blur-sm">
                     <h1 className="text-3xl font-bold text-pink-400 mb-3 text-center">Welcome Back!</h1>
                     <p className="text-center text-pink-300 mb-6 animate-pulse">✨ Login to continue ✨</p>
