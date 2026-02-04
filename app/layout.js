@@ -13,7 +13,7 @@ export const metadata={
   keywords: ['coffee','drinks','snacks','DripDrop'],
   authors: [{name: 'Ella Truong'}],
   icons: {
-    icon: '/loading1.png'
+    icon: '/coffee-logo1.png'
   }
 }
 
