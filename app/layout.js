@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body className='flex flex-col min-h-screen'>
         <UserProvider>
           <NavigationBar />
-          <div className="flex-1 overflow-auto">{children}</div>
+          <div className="flex-1 overflow-auto min-h-[calc(100vh-4rem-7rem)]">{children}</div>
           <Footer />
         </UserProvider>
       </body>
