@@ -11,7 +11,7 @@ export default function Footer() {
     ]
 
     return (
-        <div className="fixed bottom-0 w-full bg-white shadow-md z-50 pt-5 pb-10 flex flex-col space-y-4 border-t-2 border-pink-300 animate-fadeInUp">
+        <div className="fixed bottom-0 w-full bg-white shadow-md z-50 pt-3 pb-5 flex flex-col space-y-4 border-t-2 border-pink-300 animate-fadeInUp">
             
             {/* Section 1: Social Icons */}
             <div className="flex justify-center gap-5 mb-4 items-center">
