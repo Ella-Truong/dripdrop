@@ -19,7 +19,7 @@ export default function SignUpPage() {
 
             {/* Sign-up Card */}
             <div className="relative inset-0 flex items-center justify-center p-4 z-20 animate-fadeInUp">
-                <div className="w-full max-w-md p-8 bg-white/30 rounded-3xl shadow-xl border border-pink-200 backdrop-blur-sm">
+                <div className="w-9/12 max-w-sm sm:max-w-md p-6 sm:p-8 p-6 bg-white/30 rounded-3xl shadow-xl border border-pink-200 backdrop-blur-sm">
                     <h1 className="text-3xl font-bold text-pink-400 mb-4 text-center">Welcome!</h1>
                     <p className="text-center text-pink-300 mb-6 animate-pulse">✨ Create your account to get started ✨</p>
                     
