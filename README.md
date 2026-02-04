@@ -11,7 +11,7 @@ The app is fully deployed on **Vercel**.
 ---
 
 ## 🚀 Live Demo
-Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app/](https://dripdrop-git-main-ella-truongs-projects.vercel.app/)
+Access the app here: [https://dripdrop-git-main-ella-truongs-projects.vercel.app/](https://dripdrop-ella-truongs-projects.vercel.app//)
 
 ---
 
